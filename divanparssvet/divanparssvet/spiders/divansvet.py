@@ -7,4 +7,10 @@ class DivansvetSpider(scrapy.Spider):
     start_urls = ["https://www.divan.ru/category/svet"]
 
     def parse(self, response):
-        pass
+        svet_page = response.css('div.lsooF')
+        for svet in svet_page:
+            yield {
+                'name': svet.css('div.lsooF span::text').get(),
+                'price': svet.css('div.pY3d2 span::text').get(),
+                'link': svet.css('a').attrib['href']
+            }
